@@ -5,6 +5,7 @@ extern crate serde;
 extern crate serde_json;
 
 pub mod helpers;
+pub mod async_client;
 
 use reqwest::blocking::Client;
 use reqwest::header::{HeaderMap, HeaderValue};
