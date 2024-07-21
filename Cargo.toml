@@ -1,6 +1,6 @@
 [package]
 name = "sanity"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Douglass Hooker <DouglassHooker@gmail.com>"]
 edition = "2018"
 description = "The open source client for consuming https://sanity.io with Rust, based on reqwest."
@@ -14,3 +14,4 @@ readme = "README.md"
 reqwest = { version = "0.11", features = ["blocking", "json"] }
 serde = "1.0.193"
 serde_json = "1.0.108"
+tokio = { version = "1.38.1", features = ["full"] }

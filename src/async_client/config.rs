@@ -1,5 +1,10 @@
-use reqwest::Client;
+use reqwest::{Client, Error, StatusCode};
 use serde_json::Value;
+use std::{error, io::ErrorKind, time::Duration};
+use tokio::time::sleep;
+
+const MAX_RETRIES: u32 = 5;
+const INITIAL_BACKOFF: Duration = Duration::from_secs(1);
 
 #[derive(Debug, Clone)]
 pub struct SanityConfig {
@@ -63,8 +68,15 @@ impl SanityConfig {
 
     pub async fn get(&mut self, query: &str) -> Result<reqwest::Response, reqwest::Error> {
         let client: Client = reqwest::Client::new();
-        let url: String = self.build_url(Some(query)).await;
-        let res = client.get(&url).bearer_auth(&self.access_token).send().await?;
+        let url = self.build_url(Some(query)).await;
+
+        // TODO: Add support for retries
+        let res = client
+            .get(&url)
+            .bearer_auth(&self.access_token)
+            .send()
+            .await?;
+
         Ok(res)
     }
 }
