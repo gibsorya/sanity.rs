@@ -28,11 +28,7 @@ pub fn create(project_id: &str, data_set: &str, token: &str, use_prod: bool) -> 
         data_set: data_set.to_string(),
         url: get_url(project_id, data_set),
         query: Query {
-            base_url: if use_prod {
-                format!("{} {}", project_id, data_set)
-            } else {
-                format!("{} {}", project_id, data_set)
-            },
+            base_url: format!("https://{}.api.sanity.io/v1/data/query/{}", project_id, data_set),
             query: None,
         },
     }
@@ -69,6 +65,7 @@ impl SanityConfig {
     pub async fn get(&mut self, query: &str) -> Result<reqwest::Response, reqwest::Error> {
         let client: Client = reqwest::Client::new();
         let url = self.build_url(Some(query)).await;
+        println!("URL: {}", url);
 
         // TODO: Add support for retries
         let res = client
@@ -76,6 +73,8 @@ impl SanityConfig {
             .bearer_auth(&self.access_token)
             .send()
             .await?;
+
+        println!("Response: {:?}", res);
 
         Ok(res)
     }
