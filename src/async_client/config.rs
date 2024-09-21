@@ -74,8 +74,6 @@ impl SanityConfig {
             .send()
             .await?;
 
-        println!("Response: {:?}", res);
-
         Ok(res)
     }
 }
